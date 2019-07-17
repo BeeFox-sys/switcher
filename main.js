@@ -118,7 +118,8 @@ async function switchMember(id) {
     }
 }
 
-async function getSystem() { // return(system = {id:"lhqss"})
+async function getSystem() {
+    if(token == undefined) return help()
     try {
         system = await $.ajax({
             url: api + "/s",
@@ -167,4 +168,17 @@ async function getFronters() {
         dataType: "json"
     })
     console.log(fronters)
+}
+
+function help(){
+    $("#help-alert").show("slide", {
+        direction: "down",
+        distance: 300
+    }, 300)
+    hideout = setTimeout(() => {
+        $("#help-alert").hide("slide", {
+            direction: "down",
+            distance: 300
+        }, 400)
+    }, 15 * 1000);
 }
