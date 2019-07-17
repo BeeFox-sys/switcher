@@ -24,7 +24,7 @@ function loadToken() {
         distance: 300
     }, 400)
     localStorage.token = token
-    getMembers()
+    loadPage()
 }
 
 system = null
@@ -65,7 +65,8 @@ async function switchMember(id) {
     var member = await members.find((member) => {
         return member.id == id
     })
-    await $("#switch-name").text(member.name)
+    await $(".switch-name").text(member.name)
+    $(".alert").hide()
     try {
         await $.post({
             type: "POST",
