@@ -47,6 +47,13 @@
     cursor: pointer;
 }
 
+.member:active{
+    transform: scale(1.2);
+    z-index: 2;
+    box-shadow: 5px 10px 0px 3px #0004;
+    cursor: pointer;
+}
+
 .member-content{
     position: absolute;
     width: 100%;
