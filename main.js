@@ -46,10 +46,17 @@ async function getMembers() {
     })
     $("#member-grid").empty()
     members.forEach(member => {
+
+        if(member.avatar_url){
+            avatar = member.avatar_url.replace("http://","https://")
+        } else {
+            avatar = null
+        }
+
         $("#member-grid").append(`<div class="member" style="background:linear-gradient(to bottom,#${
             member.color || "fff"
         } 1.8em,#0002 1.81em,#0000 2.4em), url('${
-            member.avatar_url
+            avatar
         }') 50% .8rem,#${
             member.color || "fff"
         }; background-size: cover; background-repeat:no-repeat;background-clip: content-box; 
