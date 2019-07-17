@@ -1,0 +1,37 @@
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta content="width=device-width, initial-scale=1.0" name="viewport">
+        <meta content="ie=edge" http-equiv="X-UA-Compatible">
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+        <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="main.js"></script>
+        <link href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet">
+        <link href="normalize.css" rel="stylesheet">
+        <link href="skeleton.css" rel="stylesheet">
+        <link href="main.css" rel="stylesheet">
+
+        <title>Pluralkit Switchbord</title>
+    </head>
+    <body onload="loadPage()">
+        <div class="token">
+            <input id="token" pattern="[0-9a-zA-Z]{64}" placeholder="Pluralkit Token" type="password">
+            <input id="tokenSave" onclick="loadToken()" type="button" value="Save">
+
+        </div>
+        <div id="member-grid">
+        </div>
+        <div class="alert" id="switch-alert">Switched to
+            <span id="switch-name">Someone</span>
+        </div>
+        <div class="alert" id="switch-error-alert">
+            <span id="switch-name">Someone</span>
+            is already in front!</div>
+        <div class="alert" id="invalid-token-alert" style="color:rgb(255, 58, 58)">
+            <b>Invalid Token!</b>
+        </div>
+        <div class="alert" id="generic-alert" style="color:rgb(255, 58, 58)">
+            <b>Something went wrong (<span id="error">200</span>)</b>
+        </div>
+    </body>
+</html>
