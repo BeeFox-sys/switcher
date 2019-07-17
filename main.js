@@ -6,7 +6,7 @@ hideout = null
 function loadToken() {
     clearTimeout(hideout)
     token = $("#token").val()
-    if (!token.match(/[0-9a-zA-Z]{64}/)) { // $("#invalid-token-alert").fadeIn(200)
+    if (!token.match(/[A-Za-z0-9+/=]{64}/)) { // $("#invalid-token-alert").fadeIn(200)
         $("#invalid-token-alert").show("slide", {
             direction: "down",
             distance: 300
