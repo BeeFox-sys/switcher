@@ -1,6 +1,5 @@
 token = localStorage.token
 api = `https://api.pluralkit.me/v1`
-// api = "https://pkapi.nightshade.fun"
 
 hideout = null
 function loadToken() {
@@ -42,7 +41,10 @@ async function getMembers() {
             system.id
         }/members`,
         method: "GET",
-        dataType: "json"
+        dataType: "json",
+        headers: {
+            "Authorization": `${token}`
+        }
     })
     $("#member-grid").empty()
     members.forEach(member => {
@@ -96,6 +98,7 @@ async function switchMember(id) {
                 distance: 300
             }, 400)
         }, 6 * 1000);
+        getFronters()
     } catch (error) {
         console.log(error)
         if (error.status == "400") {
@@ -136,6 +139,7 @@ async function getSystem() {
                 xhr.setRequestHeader('Authorization', token);
             }
         })
+        getFronters()
     } catch (error) {
         console.log(error)
         if (error.status == 401) {
@@ -166,15 +170,80 @@ async function getSystem() {
     }
 }
 fronters = null
+
 async function getFronters() {
-    fronters = await $.ajax({
-        url: api + `/s/${
-            system.id
-        }/fronters`,
-        method: "GET",
-        dataType: "json"
-    })
-    console.log(fronters)
+    try{
+        fronters = await $.ajax({
+            url: api + `/s/${
+                system.id
+            }/fronters`,
+            method: "GET",
+            dataType: "json",
+            headers: {
+                "Authorization": `${token}`
+            }
+        })
+    } catch (error) {
+        console.log(error)
+        if (error.status == 401) {
+            $("#invalid-token-alert").show("slide", {
+                direction: "down",
+                distance: 300
+            }, 300)
+            hideout = setTimeout(() => {
+                $("#invalid-token-alert").hide("slide", {
+                    direction: "down",
+                    distance: 300
+                }, 400)
+            }, 6 * 1000);
+            return
+        }
+        else if (error.status == 404){ //hacky hack to catch no fronters
+            fronters = {
+                timestamp: null,
+                members: []
+            }
+        }
+        else {
+            $("#error").text(error.status)
+            $("#generic-alert").show("slide", {
+                direction: "down",
+                distance: 300
+            }, 300)
+            hideout = setTimeout(() => {
+                $("#generic-alert").hide("slide", {
+                    direction: "down",
+                    distance: 300
+                }, 400)
+            }, 6 * 1000);
+            return
+        }
+    }
+    console.log(fronters.members.map(member=>member.name))
+    $("#fronters-span")[0].innerText = gramJoin(fronters.members.map(member=>member.name))
+}
+
+function gramJoin(array){
+    let string
+
+    switch (array.length) {
+        case 0:
+            string = "None"
+            break;
+        case 1:
+            string = array[0]
+            break;
+        case 2:
+            string = `${array[0]} and ${array[1]}`
+            break;
+        default:
+            let last = array.pop()
+            string = array.join(", ")
+            string += `, and ${last}`
+            break;
+    } 
+
+    return string
 }
 
 function help(){
