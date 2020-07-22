@@ -47,7 +47,7 @@ async function getMembers() {
         }
     })
     $("#member-grid").empty()
-    members.forEach(member => {
+    members.sort((a,b)=>(a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)).forEach(member => {
 
         if(member.avatar_url){
             avatar = member.avatar_url.replace("http://","https://")
@@ -68,6 +68,7 @@ async function getMembers() {
             member.name
         }</div></div>`)
     });
+    $("#member-grid").append(`<div class="switchOut member" onclick="toSwitch=[];switchMember()"><div class="member-content">Switch<br>Out</div></div>`)
 }
 
 shiftClick = false
@@ -127,7 +128,7 @@ async function switchMember() {
         await $.post({
             type: "POST",
             url: api + "/s/switches",
-            data: `{members:['${toSwitch.join("','")}']}`,
+            data: `{members:[${toSwitch.length ? "'" : ""}${toSwitch.join("','")}${toSwitch.length ? "'" : ""}]}`,
             contentType: "application/json",
             headers: {
                 "Authorization": `${token}`

@@ -79,7 +79,8 @@
 
 .click-message{
     text-align: center;
-    color: #555
+    color: #555;
+    cursor: pointer;
 }
 
 .alert{
@@ -118,5 +119,23 @@
     z-index: 10;
 }
 .switch button{
-    background-color: #FFF;
+    background-color: #87e76f;
+    color: #222;
+    border-color: #2225;
+}
+
+.switchOut{
+    text-align: center;
+    background-color: hsl(0, 72.1%, 91.6%);
+    color: #bd1111;
+    cursor: pointer;
+}
+.switchOut .member-content{
+    padding: 19% 0;
+    font-size: 1.8em;
+}
+
+.switchOut.unselected{
+    visibility: hidden;
+    transition-duration: 50ms;
 }
