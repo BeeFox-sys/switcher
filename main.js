@@ -55,14 +55,14 @@ async function getMembers() {
             avatar = null
         }
 
-        $("#member-grid").append(`<div class="member" style="background:linear-gradient(to bottom,#${
+        $("#member-grid").append(`<div class="member" id="${member.id}" style="background:linear-gradient(to bottom,#${
             member.color || "fff"
         } 1.8em,#0002 1.81em,#0000 2.4em), url('${
             avatar
         }') 50% .8rem,#${
             member.color || "fff"
         }; background-size: cover; background-repeat:no-repeat;background-clip: content-box; 
-            " onclick="switchMember('${
+            " onclick="clickCheck(event, '${
             member.id
         }')"><div class="member-content">${
             member.name
@@ -70,19 +70,64 @@ async function getMembers() {
     });
 }
 
-async function switchMember(id) {
-    var member = await members.find((member) => {
-        return member.id == id
-    })
-    await $(".switch-name").text(member.name)
+shiftClick = false
+toSwitch = []
+
+function toggleClick(e){
+    e.stopPropagation()
+    if(!shiftClick){
+        shiftClick = true
+        enableMulti()
+    } else {
+        shiftClick = false
+        toSwitch = []
+        disableMulti()
+    }
+    
+}
+
+async function clickCheck(event, id){
+    event.stopPropagation()
+    if(event.shiftKey || shiftClick) {
+        $(`#${id}`).toggleClass("selected")
+
+        if(toSwitch.includes(id)) toSwitch.splice(toSwitch.indexOf(id),1)
+        else toSwitch.push(id)
+    
+        if($(`.selected`).length || shiftClick) enableMulti()
+        else disableMulti()
+
+    } else {
+        disableMulti()
+
+        toSwitch = [id]
+        switchMember()
+    }
+}
+
+function enableMulti(){
+    $(`.switch`).show(200)
+    $(`.member`).addClass("unselected")
+}
+function disableMulti(){
+    $(`.switch`).hide(200)
+    $(`.member`).removeClass("unselected selected")
+    shiftClick = false
+}
+
+
+async function switchMember() {
+
+    let membersToSwitch = members.filter(member=>toSwitch.includes(member.id))
+
+    await $(".switch-name").text(gramJoin(membersToSwitch.map(member=>member.name)))
+    
     $(".alert").hide()
     try {
         await $.post({
             type: "POST",
             url: api + "/s/switches",
-            data: `{members:['${
-                member.id
-            }']}`,
+            data: `{members:['${toSwitch.join("','")}']}`,
             contentType: "application/json",
             headers: {
                 "Authorization": `${token}`
@@ -126,6 +171,7 @@ async function switchMember(id) {
             }, 6 * 1000);
         }
     }
+    toSwitch = []
 }
 
 async function getSystem() {
@@ -219,7 +265,6 @@ async function getFronters() {
             return
         }
     }
-    console.log(fronters.members.map(member=>member.name))
     $("#fronters-span")[0].innerText = gramJoin(fronters.members.map(member=>member.name))
 }
 

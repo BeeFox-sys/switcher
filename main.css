@@ -32,6 +32,17 @@
     position: relative;
     border-radius: 3px;
     border: 2px #777 solid;
+    transition: 200ms
+}
+
+.unselected{
+    filter: opacity(40%);
+    transition: 150ms;
+}
+.selected{
+    border-color: #50df2c;
+    filter: none;
+    transition: 150ms;
 }
 
 .member:after{
@@ -45,6 +56,8 @@
     z-index: 2;
     box-shadow: 5px 10px 0px 0px #0004;
     cursor: pointer;
+    filter: none;
+    transition: 200ms
 }
 
 .member:active{
@@ -52,6 +65,9 @@
     z-index: 2;
     box-shadow: 5px 10px 0px 3px #0004;
     cursor: pointer;
+    filter: none;
+    transition: 50ms
+
 }
 
 .member-content{
@@ -59,6 +75,11 @@
     width: 100%;
     text-align: center;
     padding-top: 2px;
+}
+
+.click-message{
+    text-align: center;
+    color: #555
 }
 
 .alert{
@@ -85,4 +106,17 @@
 
 .fronters{
     text-align: center;
+}
+
+
+.switch{
+    display: none;
+    position: fixed;
+    float: right;
+    bottom: 20px;
+    right: 20px;
+    z-index: 10;
+}
+.switch button{
+    background-color: #FFF;
 }

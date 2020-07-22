@@ -15,7 +15,7 @@
     <title>Pluralkit Switchbord</title>
 </head>
 
-<body onload="loadPage()">
+<body onload="loadPage()" onclick="disableMulti();toSwitch=[];">
     <div class="token">
         <input id="token" pattern="[A-Za-z0-9+/=]{64}" placeholder="Pluralkit Token" type="password">
         <input id="tokenSave" onclick="loadToken()" type="button" value="Save">
@@ -23,6 +23,7 @@
         <!-- <span onclick="$('#help-box').fadeIn()" id=help class=button>?</span> -->
     </div>
     <div class="fronters">Current Fronters: <span id="fronters-span"></span></div>
+    <div class="click-message" onclick="toggleClick(event)">Shift click or click here to select multiple</div>
     <div id="member-grid">
         Loading...
     </div>
@@ -41,6 +42,7 @@
     <div class="alert" id="help-alert">
         Use the command <code>pk;token</code> with pluralkit to get your token, then paste it in the box. You can then click on members to switch them to front
     </div>
+    <div class="switch"><button onclick="switchMember()">Switch Selected</button></div>
 
 </body>
 
